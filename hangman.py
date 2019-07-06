@@ -13,9 +13,11 @@ from IPython.display import clear_output
 import random
 
 class game():
-    words = []
+
     def __init__(self):
-        pass
+        self.words = []
+        self.life = 10
+
 
 #selecting from a category loop
     def selectCategory(self):
@@ -59,45 +61,92 @@ class game():
         wlist = []           #i can make a global list l8r
         wlist2 = []
         for w in range(len(self.word)):
-            print(self.word[w], end = ' ')
+#             print(self.word[w], end = ' ')
             if self.word[w] != " ":
                 wlist.append("_")
             else:
                 wlist.append(" ")
-            wlist2.append(self.word[w])
+            wlist2.append(self.word[w].lower())
         self.gamePlay(wlist, wlist2)
+
 
 #where the gameplay is played and input is asked
     def gamePlay(self, wlist, wlist2):
-        print('inside gameplay')
-        print(wlist)
-        print(wlist2)
+
         while True:
-#             clear_output()
+            for i in range(len(wlist)):
+                print(wlist[i], end=" ")
             n = input('Choose a letter: ')
+            clear_output()
+            n = n.lower()
+            if n == 'quit':                #base case to quit.
+                break
+            if len(n) >= 2:
+                print("Please enter only 1 letter per guess.")
+                self.lettersChosen(None)
+                continue
+#             elif n == int(n)
+#                 print("Please enter letters only.")
+#                 continue
             if n in wlist2:
                 for i in range(len(wlist2)):
                     if n == wlist2[i]:
+                        del(wlist[i])
                         wlist.insert(i, n)
-                        print(wlist[i], end=" ")
-                    else:
-                        print(wlist[i], end=" ")
+                self.lettersChosen(None)
             else:
-                self.lettersChosen(n)     #this isnt called
-                print('this letter is not in word')
+                self.lettersChosen(n)
+
 
 
 
 #displays which letters are chosen
-    def lettersChosen(word):
-        words.append(word)
+    def lettersChosen(self, word):     # 'word' even tho its a letter haha.
+        s = self.checkLetter(word)
+        if s == True:
+            print(  "\tLetters Chosen"  )
+            print("–––––––––––––––––––––––––––––––––")
+            print(" ")
+            for i in range(len(self.words)):
+                print(self.words[i], end = ' ')
+            print(" ")
+            print(" ")
+            return           #this whole section i don't know how to condense this...
+        if word == None:
+            print("                                                                        Number of lives: " + str(self.life))
+            pass
+        else:
+            self.words.append(word)
+            self.lives(self.life)
         print(  "\tLetters Chosen"  )
         print("–––––––––––––––––––––––––––––––––")
         print(" ")
-        for i in range(len(words)):
-            print(words[i], end = ' ')
+        for i in range(len(self.words)):
+            print(self.words[i], end = ' ')
+        print(" ")
+        print(" ")
+        return
 
-            
+
+#checks if letter guessed is already guessed.
+    def checkLetter(self, word):
+        if word in self.words:
+            print("                                                                        Number of lives: " + str(self.life))
+            print('that letter is already guessed')
+            print(" ")
+            return True
+        else:
+            return
+
+#need to make a lives function check if letter has been already used
+
+    def lives(self, life):
+        self.life = life-1
+        print("                                                                        Number of lives: " + str(self.life))
+        return
+
+
+
 
 g = game()
 g.selectCategory()
