@@ -11,6 +11,7 @@
 #imports
 from IPython.display import clear_output
 import random
+import sys
 
 class game():
 
@@ -37,7 +38,8 @@ class game():
                     self.selectWordTwo()
                     break
             except:
-                print("Please select a valid category.")
+                print(' ')
+                print('You have exited the game.')
                 break
 
 
@@ -58,7 +60,7 @@ class game():
     def linesForWord(self, word):
         clear_output()
         self.word = word     #dont think i need this
-        wlist = []           #i can make a global list l8r
+        wlist = []
         wlist2 = []
         for w in range(len(self.word)):
 #             print(self.word[w], end = ' ')
@@ -85,9 +87,11 @@ class game():
                 print("Please enter only 1 letter per guess.")
                 self.lettersChosen(None)
                 continue
-#             elif n == int(n)
-#                 print("Please enter letters only.")
-#                 continue
+            try:
+                if int(n):
+                    print("Please enter letters only.")
+            except:
+                pass
             if n in wlist2:
                 for i in range(len(wlist2)):
                     if n == wlist2[i]:
@@ -132,21 +136,36 @@ class game():
     def checkLetter(self, word):
         if word in self.words:
             print("                                                                        Number of lives: " + str(self.life))
-            print('that letter is already guessed')
+            print(f'The letter \'{word}\' is already guessed.')
             print(" ")
             return True
         else:
             return
 
-#need to make a lives function check if letter has been already used
 
+#returns numbers of lives left
     def lives(self, life):
         self.life = life-1
+        if self.life <= 0:
+            self.lostGame()
         print("                                                                        Number of lives: " + str(self.life))
         return
 
-
-
+#when game is lost, this is called to exit or restart the program
+    def lostGame(self):
+        clear_output()
+        print("Sorry, you ran out of lives.")
+        print(' ')
+        n = input('Would you like to play again? (y or n) ')
+        clear_output()
+        if n.lower() == 'y':
+            g.selectCategory()
+            sys.exit()
+        if n.lower() == 'n':
+            clear_output()
+            print(' ')
+            print("Thanks for playing")
+            sys.exit()                   #tosses an exception but is caught by outer try / catch
 
 g = game()
 g.selectCategory()
