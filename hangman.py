@@ -1,11 +1,13 @@
 # Hangman Project
 
-#Steps:
-#         *Clear output everytime?
-#Welcome: Welcome to hang-man - and display categories - 2 categories of 5 words each chosen at random.
-#When selected print the number of tiles in the word and 'Please enter a letter'
-#if letter is in the word, replace the tile with the word(for each letter if multiple) if not - minus from lives
+#next time condense the main game function, otherwise it is too much to change after you get everything working 'properly'
+#everything else if pretty much condensed, main function is only problem
+#and its very hard to read my code
 
+#but I know this for next time*
+
+#instead of setting different if's if input is incorrect, set a list to the abc's, and if the user enters a special
+#character or a random word, throw an exception. Makes it way easier than what
 
 
 #imports
@@ -43,7 +45,7 @@ class game():
                     clear_output()
                     print("Please enter a valid category.")
             except:
-                print(' ')
+                clear_output()
                 print('You have exited the game.')
                 break
 
@@ -75,6 +77,9 @@ class game():
 
 
 #where the gameplay is played and input is asked
+#next time condense so function is not doing multiple tasks
+#i can put each task in a function and just call the function, the gameplay function just calls a bunch of functions
+
     def gamePlay(self, wlist, wlist2):
 
         while True:
