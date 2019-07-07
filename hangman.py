@@ -18,6 +18,8 @@ class game():
     def __init__(self):
         self.words = []
         self.life = 10
+        self.wlist = []
+        self.wlist2 = []
 
 
 #selecting from a category loop
@@ -37,12 +39,13 @@ class game():
                 elif question.lower() == 'movies':
                     self.selectWordTwo()
                     break
+                else:
+                    clear_output()
+                    print("Please enter a valid category.")
             except:
                 print(' ')
                 print('You have exited the game.')
                 break
-
-
 
 #selects word for the category 'famous people' based on the number sent
     def selectWord(self):
@@ -60,16 +63,15 @@ class game():
     def linesForWord(self, word):
         clear_output()
         self.word = word     #dont think i need this
-        wlist = []
-        wlist2 = []
+        #where lists were
         for w in range(len(self.word)):
 #             print(self.word[w], end = ' ')
             if self.word[w] != " ":
-                wlist.append("_")
+                self.wlist.append("_")
             else:
-                wlist.append(" ")
-            wlist2.append(self.word[w].lower())
-        self.gamePlay(wlist, wlist2)
+                self.wlist.append(" ")
+            self.wlist2.append(self.word[w].lower())
+        self.gamePlay(self.wlist, self.wlist2)
 
 
 #where the gameplay is played and input is asked
@@ -100,9 +102,8 @@ class game():
                 self.lettersChosen(None)
             else:
                 self.lettersChosen(n)
-
-
-
+            if wlist == wlist2:
+                self.wonGame()
 
 #displays which letters are chosen
     def lettersChosen(self, word):     # 'word' even tho its a letter haha.
@@ -151,21 +152,38 @@ class game():
         print("                                                                        Number of lives: " + str(self.life))
         return
 
-#when game is lost, this is called to exit or restart the program
+#when game is lost, this is called
     def lostGame(self):
         clear_output()
         print("Sorry, you ran out of lives.")
         print(' ')
         n = input('Would you like to play again? (y or n) ')
-        clear_output()
-        if n.lower() == 'y':
-            g.selectCategory()
-            sys.exit()
-        if n.lower() == 'n':
+        self.endGame(n)
+
+#checks whether the user wants to play again
+    def endGame(self, n):
             clear_output()
-            print(' ')
-            print("Thanks for playing")
-            sys.exit()                   #tosses an exception but is caught by outer try / catch
+            if n.lower() == 'y':
+                self.wlist = []              #new instance enables the game to restart without clearing all lists
+                self.wlist2 = []
+                self.words = []
+                self.life = 10
+                g.selectCategory()
+                sys.exit()
+            if n.lower() == 'n':
+                clear_output()
+                print(' ')
+                print("Thanks for playing")
+                sys.exit()                   #tosses an exception but is caught by outer try / catch
+
+#the win game exit screen
+    def wonGame(self):
+        clear_output()
+        print('Congrats, you have won the game!')
+        print(' ')
+        n = input('Would you like to play again? (y or n) ')
+        self.endGame(n)
+
 
 g = game()
 g.selectCategory()
